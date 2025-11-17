@@ -1,0 +1,15 @@
+[package]
+name = "cairo-language-common"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+cairo-lang-semantic = "*"
+
+# Here we specify real dependency specifications for Cairo crates *if* currently we want to use
+# a particular unreleased commit (which is frequent mid-development).
+# We list all Cairo crates that go into Scarb's compilation unit even if Scarb itself does not depend
+# on some of them directly.
+# This ensures no duplicate instances of Cairo crates are pulled in by mistake.
+[patch.crates-io]
+cairo-lang-semantic = { git = "https://github.com/starkware-libs/cairo", rev = "537cb20317f651204fda01965311872dad1af6e6" }
