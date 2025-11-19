@@ -1,37 +1,32 @@
 use std::collections::VecDeque;
 use std::sync::Arc;
 
-use cairo_lang_defs::db::{DefsGroup, get_all_path_leaves};
-use cairo_lang_defs::ids::{
-    ConstantLongId, EnumLongId, ExternFunctionLongId, ExternTypeLongId, FreeFunctionLongId,
-    ImplAliasLongId, ImplConstantDefLongId, ImplDefLongId, ImplFunctionLongId, ImplItemId,
-    LookupItemId, MacroDeclarationLongId, ModuleId, ModuleItemId, ModuleTypeAliasLongId,
-    StructLongId, TraitConstantLongId, TraitFunctionLongId, TraitImplLongId, TraitItemId,
-    TraitLongId, TraitTypeLongId, UseLongId,
-};
+use crate::syntax_ext::SyntaxNodeExt;
+use cairo_lang_defs::db::DefsGroup;
+use cairo_lang_defs::ids::{ModuleId, ModuleItemId};
+use cairo_lang_diagnostics::ToOption;
 use cairo_lang_filesystem::db::{ext_as_virtual, get_parent_and_mapping, translate_location};
 use cairo_lang_filesystem::ids::{CodeOrigin, FileId, FileLongId};
+use cairo_lang_filesystem::span::TextOffset;
 use cairo_lang_parser::db::ParserGroup;
-use cairo_lang_semantic::GenericParam;
-use cairo_lang_semantic::items::enm::EnumSemantic;
-use cairo_lang_semantic::items::extern_function::ExternFunctionSemantic;
-use cairo_lang_semantic::items::extern_type::ExternTypeSemantic;
-use cairo_lang_semantic::items::free_function::FreeFunctionSemantic;
-use cairo_lang_semantic::items::imp::ImplSemantic;
-use cairo_lang_semantic::items::impl_alias::ImplAliasSemantic;
 use cairo_lang_semantic::items::module::ModuleSemantic;
-use cairo_lang_semantic::items::module_type_alias::ModuleTypeAliasSemantic;
-use cairo_lang_semantic::items::structure::StructSemantic;
-use cairo_lang_semantic::items::trt::TraitSemantic;
 use cairo_lang_semantic::lsp_helpers::LspHelpers;
 use cairo_lang_syntax::node::helpers::GetIdentifier;
 use cairo_lang_syntax::node::kind::SyntaxKind;
 use cairo_lang_syntax::node::{SyntaxNode, TypedSyntaxNode, ast};
-use cairo_lang_utils::Intern;
 use cairo_lang_utils::ordered_hash_set::OrderedHashSet;
 use salsa::Database;
 
-pub trait ResultantsGroup: Database {
+pub trait CommonGroup: Database {
+    /// Finds the most specific [`SyntaxNode`] at the given [`TextOffset`] in the file.
+    fn find_syntax_node_at_offset<'db>(
+        &'db self,
+        file: FileId<'db>,
+        offset: TextOffset,
+    ) -> Option<SyntaxNode<'db>> {
+        find_syntax_node_at_offset(self.as_dyn_database(), file, offset)
+    }
+
     /// Finds a [`ModuleId`] containing the node.
     fn find_module_containing_node<'db>(&'db self, node: SyntaxNode<'db>) -> Option<ModuleId<'db>> {
         find_module_containing_node(self.as_dyn_database(), (), node)
@@ -128,7 +123,17 @@ pub trait ResultantsGroup: Database {
     }
 }
 
-impl<T: Database + ?Sized> ResultantsGroup for T {}
+impl<T: Database + ?Sized> CommonGroup for T {}
+
+/// Finds the most specific [`SyntaxNode`] at the given [`TextOffset`] in the file.
+#[salsa::tracked]
+fn find_syntax_node_at_offset<'db>(
+    db: &'db dyn Database,
+    file: FileId<'db>,
+    offset: TextOffset,
+) -> Option<SyntaxNode<'db>> {
+    Some(db.file_syntax(file).to_option()?.lookup_offset(db, offset))
+}
 
 #[salsa::tracked]
 fn find_module_containing_node<'db>(
@@ -281,185 +286,6 @@ fn get_node_resultants<'db>(
     Some(resultants.into_iter().copied().collect())
 }
 
-/// If the ast node is a lookup item, return corresponding ids. Otherwise, returns `None`.
-/// See [LookupItemId<'db>].
-fn lookup_item_from_ast<'db>(
-    db: &'db dyn Database,
-    module_id: ModuleId<'db>,
-    node: SyntaxNode<'db>,
-) -> Option<Vec<LookupItemId<'db>>> {
-    let syntax_db = db;
-
-    let is_in_impl = node
-        .ancestor_of_kind(syntax_db, SyntaxKind::ItemImpl)
-        .is_some();
-
-    Some(match node.kind(syntax_db) {
-        SyntaxKind::ItemConstant => {
-            if is_in_impl {
-                vec![LookupItemId::ImplItem(ImplItemId::Constant(
-                    ImplConstantDefLongId(
-                        module_id,
-                        ast::ItemConstant::from_syntax_node(syntax_db, node).stable_ptr(syntax_db),
-                    )
-                    .intern(db),
-                ))]
-            } else {
-                vec![LookupItemId::ModuleItem(ModuleItemId::Constant(
-                    ConstantLongId(
-                        module_id,
-                        ast::ItemConstant::from_syntax_node(db, node).stable_ptr(db),
-                    )
-                    .intern(db),
-                ))]
-            }
-        }
-        SyntaxKind::FunctionWithBody => {
-            if is_in_impl {
-                vec![LookupItemId::ImplItem(ImplItemId::Function(
-                    ImplFunctionLongId(
-                        module_id,
-                        ast::FunctionWithBody::from_syntax_node(db, node).stable_ptr(db),
-                    )
-                    .intern(db),
-                ))]
-            } else {
-                vec![LookupItemId::ModuleItem(ModuleItemId::FreeFunction(
-                    FreeFunctionLongId(
-                        module_id,
-                        ast::FunctionWithBody::from_syntax_node(db, node).stable_ptr(db),
-                    )
-                    .intern(db),
-                ))]
-            }
-        }
-        SyntaxKind::ItemExternFunction => {
-            vec![LookupItemId::ModuleItem(ModuleItemId::ExternFunction(
-                ExternFunctionLongId(
-                    module_id,
-                    ast::ItemExternFunction::from_syntax_node(db, node).stable_ptr(db),
-                )
-                .intern(db),
-            ))]
-        }
-        SyntaxKind::ItemExternType => vec![LookupItemId::ModuleItem(ModuleItemId::ExternType(
-            ExternTypeLongId(
-                module_id,
-                ast::ItemExternType::from_syntax_node(db, node).stable_ptr(db),
-            )
-            .intern(db),
-        ))],
-        SyntaxKind::ItemTrait => {
-            vec![LookupItemId::ModuleItem(ModuleItemId::Trait(
-                TraitLongId(
-                    module_id,
-                    ast::ItemTrait::from_syntax_node(db, node).stable_ptr(db),
-                )
-                .intern(db),
-            ))]
-        }
-        SyntaxKind::TraitItemConstant => {
-            vec![LookupItemId::TraitItem(TraitItemId::Constant(
-                TraitConstantLongId(
-                    module_id,
-                    ast::TraitItemConstant::from_syntax_node(db, node).stable_ptr(db),
-                )
-                .intern(db),
-            ))]
-        }
-        SyntaxKind::TraitItemFunction => {
-            vec![LookupItemId::TraitItem(TraitItemId::Function(
-                TraitFunctionLongId(
-                    module_id,
-                    ast::TraitItemFunction::from_syntax_node(db, node).stable_ptr(db),
-                )
-                .intern(db),
-            ))]
-        }
-        SyntaxKind::TraitItemImpl => {
-            vec![LookupItemId::TraitItem(TraitItemId::Impl(
-                TraitImplLongId(
-                    module_id,
-                    ast::TraitItemImpl::from_syntax_node(db, node).stable_ptr(db),
-                )
-                .intern(db),
-            ))]
-        }
-        SyntaxKind::TraitItemType => {
-            vec![LookupItemId::TraitItem(TraitItemId::Type(
-                TraitTypeLongId(
-                    module_id,
-                    ast::TraitItemType::from_syntax_node(db, node).stable_ptr(db),
-                )
-                .intern(db),
-            ))]
-        }
-        SyntaxKind::ItemImpl => {
-            vec![LookupItemId::ModuleItem(ModuleItemId::Impl(
-                ImplDefLongId(
-                    module_id,
-                    ast::ItemImpl::from_syntax_node(db, node).stable_ptr(db),
-                )
-                .intern(db),
-            ))]
-        }
-        SyntaxKind::ItemStruct => {
-            vec![LookupItemId::ModuleItem(ModuleItemId::Struct(
-                StructLongId(
-                    module_id,
-                    ast::ItemStruct::from_syntax_node(db, node).stable_ptr(db),
-                )
-                .intern(db),
-            ))]
-        }
-        SyntaxKind::ItemEnum => {
-            vec![LookupItemId::ModuleItem(ModuleItemId::Enum(
-                EnumLongId(
-                    module_id,
-                    ast::ItemEnum::from_syntax_node(db, node).stable_ptr(db),
-                )
-                .intern(db),
-            ))]
-        }
-        SyntaxKind::ItemUse => {
-            // Item use is not a lookup item, so we need to collect all UseLeaf, which are lookup
-            // items.
-            let item_use = ast::ItemUse::from_syntax_node(db, node);
-            get_all_path_leaves(db, &item_use)
-                .into_iter()
-                .map(|leaf| {
-                    let use_long_id = UseLongId(module_id, leaf.stable_ptr(syntax_db));
-                    LookupItemId::ModuleItem(ModuleItemId::Use(use_long_id.intern(db)))
-                })
-                .collect()
-        }
-        SyntaxKind::ItemTypeAlias => vec![LookupItemId::ModuleItem(ModuleItemId::TypeAlias(
-            ModuleTypeAliasLongId(
-                module_id,
-                ast::ItemTypeAlias::from_syntax_node(db, node).stable_ptr(db),
-            )
-            .intern(db),
-        ))],
-        SyntaxKind::ItemImplAlias => vec![LookupItemId::ModuleItem(ModuleItemId::ImplAlias(
-            ImplAliasLongId(
-                module_id,
-                ast::ItemImplAlias::from_syntax_node(db, node).stable_ptr(db),
-            )
-            .intern(db),
-        ))],
-        SyntaxKind::ItemMacroDeclaration => {
-            vec![LookupItemId::ModuleItem(ModuleItemId::MacroDeclaration(
-                MacroDeclarationLongId(
-                    module_id,
-                    ast::ItemMacroDeclaration::from_syntax_node(db, node).stable_ptr(db),
-                )
-                .intern(db),
-            ))]
-        }
-        _ => return None,
-    })
-}
-
 #[tracing::instrument(skip_all)]
 #[salsa::tracked(returns(ref))]
 /// See [`Database::get_node_resultants`].
@@ -566,59 +392,4 @@ fn find_generated_nodes<'db>(
     }
 
     result
-}
-
-#[salsa::tracked(returns(ref))]
-fn item_generic_params<'db>(
-    db: &'db dyn Database,
-    _tracked: (),
-    lookup_item: LookupItemId<'db>,
-) -> Vec<GenericParam<'db>> {
-    match lookup_item {
-        LookupItemId::ModuleItem(module_item_id) => match module_item_id {
-            ModuleItemId::FreeFunction(free_function_id) => db
-                .free_function_generic_params(free_function_id)
-                .map(|x| x.to_vec()),
-            ModuleItemId::Struct(struct_id) => {
-                db.struct_generic_params(struct_id).map(|x| x.to_vec())
-            }
-            ModuleItemId::Enum(enum_id) => db.enum_generic_params(enum_id).map(|x| x.to_vec()),
-            ModuleItemId::TypeAlias(module_type_alias_id) => db
-                .module_type_alias_generic_params(module_type_alias_id)
-                .map(|x| x.to_vec()),
-            ModuleItemId::ImplAlias(impl_alias_id) => db
-                .impl_alias_generic_params(impl_alias_id)
-                .map(|x| x.to_vec()),
-            ModuleItemId::Trait(trait_id) => db.trait_generic_params(trait_id).map(|x| x.to_vec()),
-            ModuleItemId::Impl(impl_def_id) => {
-                db.impl_def_generic_params(impl_def_id).map(|x| x.to_vec())
-            }
-            ModuleItemId::ExternType(extern_type_id) => db
-                .extern_type_declaration_generic_params(extern_type_id)
-                .map(|x| x.to_vec()),
-            ModuleItemId::ExternFunction(extern_function_id) => db
-                .extern_function_declaration_generic_params(extern_function_id)
-                .map(|x| x.to_vec()),
-            _ => return vec![],
-        },
-        LookupItemId::TraitItem(trait_item_id) => match trait_item_id {
-            TraitItemId::Function(trait_function_id) => db
-                .trait_function_generic_params(trait_function_id)
-                .map(|x| x.to_vec()),
-            TraitItemId::Type(trait_type_id) => db
-                .trait_type_generic_params(trait_type_id)
-                .map(|x| x.to_vec()),
-            _ => return vec![],
-        },
-        LookupItemId::ImplItem(impl_item_id) => match impl_item_id {
-            ImplItemId::Function(impl_function_id) => db
-                .impl_function_generic_params(impl_function_id)
-                .map(|x| x.to_vec()),
-            ImplItemId::Type(impl_type_def_id) => db.impl_type_def_generic_params(impl_type_def_id),
-            _ => return vec![],
-        },
-    }
-    .into_iter()
-    .flatten()
-    .collect()
 }

@@ -5,6 +5,7 @@ edition = "2024"
 
 [dependencies]
 cairo-lang-defs = "*"
+cairo-lang-diagnostics = "*"
 cairo-lang-filesystem = "*"
 cairo-lang-parser = "*"
 cairo-lang-semantic = "*"
@@ -20,6 +21,7 @@ tracing = "0.1"
 # This ensures no duplicate instances of Cairo crates are pulled in by mistake.
 [patch.crates-io]
 cairo-lang-defs = { git = "https://github.com/starkware-libs/cairo", rev = "0f73d7cb5a0db79d8ad215442e6a7794f76e7c20" }
+cairo-lang-diagnostics = { git = "https://github.com/starkware-libs/cairo", rev = "0f73d7cb5a0db79d8ad215442e6a7794f76e7c20" }
 cairo-lang-filesystem = { git = "https://github.com/starkware-libs/cairo", rev = "0f73d7cb5a0db79d8ad215442e6a7794f76e7c20" }
 cairo-lang-parser = { git = "https://github.com/starkware-libs/cairo", rev = "0f73d7cb5a0db79d8ad215442e6a7794f76e7c20" }
 cairo-lang-semantic = { git = "https://github.com/starkware-libs/cairo", rev = "0f73d7cb5a0db79d8ad215442e6a7794f76e7c20" }

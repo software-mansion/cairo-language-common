@@ -275,6 +275,7 @@ name = "cairo-language-common"
 version = "0.1.0"
 dependencies = [
  "cairo-lang-defs",
+ "cairo-lang-diagnostics",
  "cairo-lang-filesystem",
  "cairo-lang-parser",
  "cairo-lang-semantic",
