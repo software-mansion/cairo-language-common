@@ -12,6 +12,7 @@ cairo-lang-semantic = "*"
 cairo-lang-syntax = "*"
 cairo-lang-utils = "*"
 salsa = "0.24.0"
+semver = "1"
 tracing = "0.1"
 
 # Here we specify real dependency specifications for Cairo crates *if* currently we want to use

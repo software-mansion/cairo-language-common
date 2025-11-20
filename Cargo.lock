@@ -282,6 +282,7 @@ dependencies = [
  "cairo-lang-syntax",
  "cairo-lang-utils",
  "salsa",
+ "semver",
  "tracing",
 ]
 

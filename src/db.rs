@@ -50,7 +50,7 @@ pub trait CommonGroup: Database {
     }
 
     /// We use the term `resultants` to refer to generated nodes that are mapped to the original node and are not deleted.
-    /// Efectively (user nodes + generated nodes - removed nodes) set always contains resultants for any user defined node.
+    /// Effectively (user nodes + generated nodes - removed nodes) set always contains resultants for any user defined node.
     /// Semantic data may be available only for resultants.
     ///
     /// Consider the following foundry code as an example:
@@ -288,7 +288,7 @@ fn get_node_resultants<'db>(
 
 #[tracing::instrument(skip_all)]
 #[salsa::tracked(returns(ref))]
-/// See [`Database::get_node_resultants`].
+/// See [`get_node_resultants`].
 fn find_generated_nodes<'db>(
     db: &'db dyn Database,
     node_descendant_files: Arc<[FileId<'db>]>,
