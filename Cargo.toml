@@ -1,7 +1,9 @@
 [package]
 name = "cairo-language-common"
+description = "Common Cairo compiler utils."
 version = "2.15.0-rc.0"
 edition = "2024"
+license = "Apache-2.0"
 
 [dependencies]
 cairo-lang-defs = "2.15.0-rc.0"
