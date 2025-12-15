@@ -3,17 +3,15 @@ use std::sync::Arc;
 
 use crate::syntax_ext::SyntaxNodeExt;
 use cairo_lang_defs::db::DefsGroup;
-use cairo_lang_defs::ids::{ModuleId, ModuleItemId};
+use cairo_lang_defs::ids::ModuleId;
 use cairo_lang_diagnostics::ToOption;
 use cairo_lang_filesystem::db::{ext_as_virtual, get_parent_and_mapping, translate_location};
 use cairo_lang_filesystem::ids::{CodeOrigin, FileId, FileLongId};
 use cairo_lang_filesystem::span::TextOffset;
 use cairo_lang_parser::db::ParserGroup;
-use cairo_lang_semantic::items::module::ModuleSemantic;
 use cairo_lang_semantic::lsp_helpers::LspHelpers;
-use cairo_lang_syntax::node::helpers::GetIdentifier;
+use cairo_lang_syntax::node::SyntaxNode;
 use cairo_lang_syntax::node::kind::SyntaxKind;
-use cairo_lang_syntax::node::{SyntaxNode, TypedSyntaxNode, ast};
 use cairo_lang_utils::ordered_hash_set::OrderedHashSet;
 use salsa::Database;
 
