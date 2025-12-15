@@ -1,16 +1,16 @@
 [package]
 name = "cairo-language-common"
-version = "0.1.0"
+version = "2.15.0-rc.0"
 edition = "2024"
 
 [dependencies]
-cairo-lang-defs = "*"
-cairo-lang-diagnostics = "*"
-cairo-lang-filesystem = "*"
-cairo-lang-parser = "*"
-cairo-lang-semantic = "*"
-cairo-lang-syntax = "*"
-cairo-lang-utils = "*"
+cairo-lang-defs = "2.15.0-rc.0"
+cairo-lang-diagnostics = "2.15.0-rc.0"
+cairo-lang-filesystem = "2.15.0-rc.0"
+cairo-lang-parser = "2.15.0-rc.0"
+cairo-lang-semantic = "2.15.0-rc.0"
+cairo-lang-syntax = "2.15.0-rc.0"
+cairo-lang-utils = "2.15.0-rc.0"
 salsa = "0.24.0"
 semver = "1"
 tracing = "0.1"
@@ -21,10 +21,3 @@ tracing = "0.1"
 # on some of them directly.
 # This ensures no duplicate instances of Cairo crates are pulled in by mistake.
 [patch.crates-io]
-cairo-lang-defs = { git = "https://github.com/starkware-libs/cairo", rev = "0f73d7cb5a0db79d8ad215442e6a7794f76e7c20" }
-cairo-lang-diagnostics = { git = "https://github.com/starkware-libs/cairo", rev = "0f73d7cb5a0db79d8ad215442e6a7794f76e7c20" }
-cairo-lang-filesystem = { git = "https://github.com/starkware-libs/cairo", rev = "0f73d7cb5a0db79d8ad215442e6a7794f76e7c20" }
-cairo-lang-parser = { git = "https://github.com/starkware-libs/cairo", rev = "0f73d7cb5a0db79d8ad215442e6a7794f76e7c20" }
-cairo-lang-semantic = { git = "https://github.com/starkware-libs/cairo", rev = "0f73d7cb5a0db79d8ad215442e6a7794f76e7c20" }
-cairo-lang-syntax = { git = "https://github.com/starkware-libs/cairo", rev = "0f73d7cb5a0db79d8ad215442e6a7794f76e7c20" }
-cairo-lang-utils = { git = "https://github.com/starkware-libs/cairo", rev = "0f73d7cb5a0db79d8ad215442e6a7794f76e7c20" }
