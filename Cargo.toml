@@ -3,6 +3,7 @@ name = "cairo-language-common"
 description = "Common Cairo compiler utils."
 version = "2.15.0-rc.1"
 edition = "2024"
+repository = "https://github.com/software-mansion/cairo-language-common"
 license = "Apache-2.0"
 
 [dependencies]
