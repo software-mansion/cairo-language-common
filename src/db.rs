@@ -112,7 +112,11 @@ pub trait CommonGroup: Database {
         node_descendant_files: Arc<[FileId<'db>]>,
         node: SyntaxNode<'db>,
     ) -> &'db OrderedHashSet<SyntaxNode<'db>> {
-        find_generated_nodes(self.as_dyn_database(), node_descendant_files, node)
+        find_generated_nodes(
+            self.as_dyn_database(),
+            node_descendant_files.iter().cloned().collect(),
+            node,
+        )
     }
 }
 
@@ -232,7 +236,7 @@ fn get_node_resultants<'db>(
 /// See [`get_node_resultants`].
 fn find_generated_nodes<'db>(
     db: &'db dyn Database,
-    node_descendant_files: Arc<[FileId<'db>]>,
+    node_descendant_files: Vec<FileId<'db>>,
     node: SyntaxNode<'db>,
 ) -> OrderedHashSet<SyntaxNode<'db>> {
     let start_file = node.stable_ptr(db).file_id(db);
@@ -321,7 +325,7 @@ fn find_generated_nodes<'db>(
 
         for new_node in new_nodes {
             result.extend(
-                find_generated_nodes(db, Arc::clone(&node_descendant_files), new_node)
+                find_generated_nodes(db, node_descendant_files.clone(), new_node)
                     .into_iter()
                     .copied(),
             );
