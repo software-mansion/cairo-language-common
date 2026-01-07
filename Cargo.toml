@@ -14,9 +14,10 @@ cairo-lang-parser = "*"
 cairo-lang-semantic = "*"
 cairo-lang-syntax = "*"
 cairo-lang-utils = "*"
+salsa = "0.25.2"
 semver = "1"
 tracing = "0.1"
-salsa = "*"
+
 # Here we specify real dependency specifications for Cairo crates *if* currently we want to use
 # a particular unreleased commit (which is frequent mid-development).
 # We list all Cairo crates that go into Scarb's compilation unit even if Scarb itself does not depend
