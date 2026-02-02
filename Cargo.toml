@@ -24,10 +24,10 @@ tracing = "0.1"
 # on some of them directly.
 # This ensures no duplicate instances of Cairo crates are pulled in by mistake.
 [patch.crates-io]
-cairo-lang-defs = { git = "https://github.com/starkware-libs/cairo/", rev = "c025138712c9d63a1c4a4db3e90fdf94a9ee004c" }
-cairo-lang-diagnostics = { git = "https://github.com/starkware-libs/cairo/", rev = "c025138712c9d63a1c4a4db3e90fdf94a9ee004c" }
-cairo-lang-filesystem = { git = "https://github.com/starkware-libs/cairo/", rev = "c025138712c9d63a1c4a4db3e90fdf94a9ee004c" }
-cairo-lang-parser = { git = "https://github.com/starkware-libs/cairo/", rev = "c025138712c9d63a1c4a4db3e90fdf94a9ee004c" }
-cairo-lang-semantic = { git = "https://github.com/starkware-libs/cairo/", rev = "c025138712c9d63a1c4a4db3e90fdf94a9ee004c" }
-cairo-lang-syntax = { git = "https://github.com/starkware-libs/cairo/", rev = "c025138712c9d63a1c4a4db3e90fdf94a9ee004c" }
-cairo-lang-utils = { git = "https://github.com/starkware-libs/cairo/", rev = "c025138712c9d63a1c4a4db3e90fdf94a9ee004c" }
+cairo-lang-defs = { git = "https://github.com/starkware-libs/cairo/", rev = "de768f33024c3092fd31187c86030ba245535668" }
+cairo-lang-diagnostics = { git = "https://github.com/starkware-libs/cairo/", rev = "de768f33024c3092fd31187c86030ba245535668" }
+cairo-lang-filesystem = { git = "https://github.com/starkware-libs/cairo/", rev = "de768f33024c3092fd31187c86030ba245535668" }
+cairo-lang-parser = { git = "https://github.com/starkware-libs/cairo/", rev = "de768f33024c3092fd31187c86030ba245535668" }
+cairo-lang-semantic = { git = "https://github.com/starkware-libs/cairo/", rev = "de768f33024c3092fd31187c86030ba245535668" }
+cairo-lang-syntax = { git = "https://github.com/starkware-libs/cairo/", rev = "de768f33024c3092fd31187c86030ba245535668" }
+cairo-lang-utils = { git = "https://github.com/starkware-libs/cairo/", rev = "de768f33024c3092fd31187c86030ba245535668" }
