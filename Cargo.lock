@@ -86,7 +86,7 @@ checksum = "1fd0f2584146f6f2ef48085050886acf353beff7305ebd1ae69500e27c67f64b"
 [[package]]
 name = "cairo-lang-debug"
 version = "2.15.0"
-source = "git+https://github.com/starkware-libs/cairo/?rev=de768f33024c3092fd31187c86030ba245535668#de768f33024c3092fd31187c86030ba245535668"
+source = "git+https://github.com/starkware-libs/cairo/?rev=bf4bb15a41094a08b06c7b1c502ffaa47d49aa8a#bf4bb15a41094a08b06c7b1c502ffaa47d49aa8a"
 dependencies = [
  "cairo-lang-utils",
  "id-arena",
@@ -96,7 +96,7 @@ dependencies = [
 [[package]]
 name = "cairo-lang-defs"
 version = "2.15.0"
-source = "git+https://github.com/starkware-libs/cairo/?rev=de768f33024c3092fd31187c86030ba245535668#de768f33024c3092fd31187c86030ba245535668"
+source = "git+https://github.com/starkware-libs/cairo/?rev=bf4bb15a41094a08b06c7b1c502ffaa47d49aa8a#bf4bb15a41094a08b06c7b1c502ffaa47d49aa8a"
 dependencies = [
  "cairo-lang-debug",
  "cairo-lang-diagnostics",
@@ -116,7 +116,7 @@ dependencies = [
 [[package]]
 name = "cairo-lang-diagnostics"
 version = "2.15.0"
-source = "git+https://github.com/starkware-libs/cairo/?rev=de768f33024c3092fd31187c86030ba245535668#de768f33024c3092fd31187c86030ba245535668"
+source = "git+https://github.com/starkware-libs/cairo/?rev=bf4bb15a41094a08b06c7b1c502ffaa47d49aa8a#bf4bb15a41094a08b06c7b1c502ffaa47d49aa8a"
 dependencies = [
  "cairo-lang-debug",
  "cairo-lang-filesystem",
@@ -129,7 +129,7 @@ dependencies = [
 [[package]]
 name = "cairo-lang-filesystem"
 version = "2.15.0"
-source = "git+https://github.com/starkware-libs/cairo/?rev=de768f33024c3092fd31187c86030ba245535668#de768f33024c3092fd31187c86030ba245535668"
+source = "git+https://github.com/starkware-libs/cairo/?rev=bf4bb15a41094a08b06c7b1c502ffaa47d49aa8a#bf4bb15a41094a08b06c7b1c502ffaa47d49aa8a"
 dependencies = [
  "cairo-lang-debug",
  "cairo-lang-proc-macros",
@@ -146,7 +146,7 @@ dependencies = [
 [[package]]
 name = "cairo-lang-parser"
 version = "2.15.0"
-source = "git+https://github.com/starkware-libs/cairo/?rev=de768f33024c3092fd31187c86030ba245535668#de768f33024c3092fd31187c86030ba245535668"
+source = "git+https://github.com/starkware-libs/cairo/?rev=bf4bb15a41094a08b06c7b1c502ffaa47d49aa8a#bf4bb15a41094a08b06c7b1c502ffaa47d49aa8a"
 dependencies = [
  "cairo-lang-diagnostics",
  "cairo-lang-filesystem",
@@ -165,7 +165,7 @@ dependencies = [
 [[package]]
 name = "cairo-lang-plugins"
 version = "2.15.0"
-source = "git+https://github.com/starkware-libs/cairo/?rev=de768f33024c3092fd31187c86030ba245535668#de768f33024c3092fd31187c86030ba245535668"
+source = "git+https://github.com/starkware-libs/cairo/?rev=bf4bb15a41094a08b06c7b1c502ffaa47d49aa8a#bf4bb15a41094a08b06c7b1c502ffaa47d49aa8a"
 dependencies = [
  "cairo-lang-defs",
  "cairo-lang-diagnostics",
@@ -188,7 +188,7 @@ checksum = "123ac0ecadf31bacae77436d72b88fa9caef2b8e92c89ce63a125ae911a12fae"
 [[package]]
 name = "cairo-lang-proc-macros"
 version = "2.15.0"
-source = "git+https://github.com/starkware-libs/cairo/?rev=de768f33024c3092fd31187c86030ba245535668#de768f33024c3092fd31187c86030ba245535668"
+source = "git+https://github.com/starkware-libs/cairo/?rev=bf4bb15a41094a08b06c7b1c502ffaa47d49aa8a#bf4bb15a41094a08b06c7b1c502ffaa47d49aa8a"
 dependencies = [
  "cairo-lang-debug",
  "proc-macro2",
@@ -200,7 +200,7 @@ dependencies = [
 [[package]]
 name = "cairo-lang-semantic"
 version = "2.15.0"
-source = "git+https://github.com/starkware-libs/cairo/?rev=de768f33024c3092fd31187c86030ba245535668#de768f33024c3092fd31187c86030ba245535668"
+source = "git+https://github.com/starkware-libs/cairo/?rev=bf4bb15a41094a08b06c7b1c502ffaa47d49aa8a#bf4bb15a41094a08b06c7b1c502ffaa47d49aa8a"
 dependencies = [
  "cairo-lang-debug",
  "cairo-lang-defs",
@@ -227,7 +227,7 @@ dependencies = [
 [[package]]
 name = "cairo-lang-syntax"
 version = "2.15.0"
-source = "git+https://github.com/starkware-libs/cairo/?rev=de768f33024c3092fd31187c86030ba245535668#de768f33024c3092fd31187c86030ba245535668"
+source = "git+https://github.com/starkware-libs/cairo/?rev=bf4bb15a41094a08b06c7b1c502ffaa47d49aa8a#bf4bb15a41094a08b06c7b1c502ffaa47d49aa8a"
 dependencies = [
  "cairo-lang-debug",
  "cairo-lang-filesystem",
@@ -244,7 +244,7 @@ dependencies = [
 [[package]]
 name = "cairo-lang-syntax-codegen"
 version = "2.15.0"
-source = "git+https://github.com/starkware-libs/cairo/?rev=de768f33024c3092fd31187c86030ba245535668#de768f33024c3092fd31187c86030ba245535668"
+source = "git+https://github.com/starkware-libs/cairo/?rev=bf4bb15a41094a08b06c7b1c502ffaa47d49aa8a#bf4bb15a41094a08b06c7b1c502ffaa47d49aa8a"
 dependencies = [
  "genco",
  "xshell",
@@ -253,7 +253,7 @@ dependencies = [
 [[package]]
 name = "cairo-lang-utils"
 version = "2.15.0"
-source = "git+https://github.com/starkware-libs/cairo/?rev=de768f33024c3092fd31187c86030ba245535668#de768f33024c3092fd31187c86030ba245535668"
+source = "git+https://github.com/starkware-libs/cairo/?rev=bf4bb15a41094a08b06c7b1c502ffaa47d49aa8a#bf4bb15a41094a08b06c7b1c502ffaa47d49aa8a"
 dependencies = [
  "hashbrown 0.16.0",
  "indexmap",
@@ -995,9 +995,9 @@ checksum = "28d3b2b1366ec20994f1fd18c3c594f05c5dd4bc44d8bb0c1c632c8d6829481f"
 
 [[package]]
 name = "salsa"
-version = "0.25.2"
+version = "0.26.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e2e2aa2fca57727371eeafc975acc8e6f4c52f8166a78035543f6ee1c74c2dcc"
+checksum = "f77debccd43ba198e9cee23efd7f10330ff445e46a98a2b107fed9094a1ee676"
 dependencies = [
  "boxcar",
  "crossbeam-queue",
@@ -1020,15 +1020,15 @@ dependencies = [
 
 [[package]]
 name = "salsa-macro-rules"
-version = "0.25.2"
+version = "0.26.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1bfc2a1e7bf06964105515451d728f2422dedc3a112383324a00b191a5c397a3"
+checksum = "ea07adbf42d91cc076b7daf3b38bc8168c19eb362c665964118a89bc55ef19a5"
 
 [[package]]
 name = "salsa-macros"
-version = "0.25.2"
+version = "0.26.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "3d844c1aa34946da46af683b5c27ec1088a3d9d84a2b837a108223fd830220e1"
+checksum = "d16d4d8b66451b9c75ddf740b7fc8399bc7b8ba33e854a5d7526d18708f67b05"
 dependencies = [
  "proc-macro2",
  "quote",
