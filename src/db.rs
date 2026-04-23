@@ -264,7 +264,15 @@ fn find_generated_nodes<'db>(
                 // This is in fact default mapping containing whole file
                 // Skip it as whole file content `ModuleItemList` or `SyntaxFile` node is found otherwise
                 CodeOrigin::CallSite(_) => false,
-                CodeOrigin::Start(start) => start == node.span(db).start,
+                CodeOrigin::Start(start) => {
+                    let node_span = node.span(db);
+                    // Exact match: the input node starts at the same position as the copied node.
+                    start == node_span.start
+                        // Or: the input node is a child node of the copied node.
+                        // (CodeOrigin::Start means a whole node is copied, so relative positions of children are preserved).
+                        || (start < node_span.start
+                            && node_span.end <= start.add_width(mapping.span.width()))
+                }
                 CodeOrigin::Span(span) => node.span(db).contains(span),
             })
             .cloned()
@@ -282,7 +290,16 @@ fn find_generated_nodes<'db>(
         let mut new_nodes: OrderedHashSet<_> = Default::default();
 
         for mapping in &mappings {
-            let node_by_offset = file_syntax.lookup_offset(db, mapping.span.start);
+            // For Start mappings, look up the position in the generated file that corresponds to
+            // the input node's position within the copy (preserving relative offset).
+            let lookup_offset = match mapping.origin {
+                CodeOrigin::Start(origin_start) => mapping
+                    .span
+                    .start
+                    .add_width(node.span(db).start - origin_start),
+                _ => mapping.span.start,
+            };
+            let node_by_offset = file_syntax.lookup_offset(db, lookup_offset);
             let node_parent = node_by_offset.parent(db);
             node_parent
                 .unwrap_or(node_by_offset)
