@@ -24,10 +24,10 @@ tracing = "0.1"
 # on some of them directly.
 # This ensures no duplicate instances of Cairo crates are pulled in by mistake.
 [patch.crates-io]
-cairo-lang-defs = { git = "https://github.com/starkware-libs/cairo/", rev = "bf4bb15a41094a08b06c7b1c502ffaa47d49aa8a" }
-cairo-lang-diagnostics = { git = "https://github.com/starkware-libs/cairo/", rev = "bf4bb15a41094a08b06c7b1c502ffaa47d49aa8a" }
-cairo-lang-filesystem = { git = "https://github.com/starkware-libs/cairo/", rev = "bf4bb15a41094a08b06c7b1c502ffaa47d49aa8a" }
-cairo-lang-parser = { git = "https://github.com/starkware-libs/cairo/", rev = "bf4bb15a41094a08b06c7b1c502ffaa47d49aa8a" }
-cairo-lang-semantic = { git = "https://github.com/starkware-libs/cairo/", rev = "bf4bb15a41094a08b06c7b1c502ffaa47d49aa8a" }
-cairo-lang-syntax = { git = "https://github.com/starkware-libs/cairo/", rev = "bf4bb15a41094a08b06c7b1c502ffaa47d49aa8a" }
-cairo-lang-utils = { git = "https://github.com/starkware-libs/cairo/", rev = "bf4bb15a41094a08b06c7b1c502ffaa47d49aa8a" }
+cairo-lang-defs = { git = "https://github.com/starkware-libs/cairo/", branch = "optimization/prototype" }
+cairo-lang-diagnostics = { git = "https://github.com/starkware-libs/cairo/", branch = "optimization/prototype" }
+cairo-lang-filesystem = { git = "https://github.com/starkware-libs/cairo/", branch = "optimization/prototype" }
+cairo-lang-parser = { git = "https://github.com/starkware-libs/cairo/", branch = "optimization/prototype" }
+cairo-lang-semantic = { git = "https://github.com/starkware-libs/cairo/", branch = "optimization/prototype" }
+cairo-lang-syntax = { git = "https://github.com/starkware-libs/cairo/", branch = "optimization/prototype" }
+cairo-lang-utils = { git = "https://github.com/starkware-libs/cairo/", branch = "optimization/prototype" }
