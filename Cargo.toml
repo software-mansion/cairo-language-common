@@ -14,7 +14,7 @@ cairo-lang-parser = "*"
 cairo-lang-semantic = "*"
 cairo-lang-syntax = "*"
 cairo-lang-utils = "*"
-salsa = "0.26.0"
+salsa = "0.27.2"
 semver = "1"
 tracing = "0.1"
 
@@ -24,10 +24,10 @@ tracing = "0.1"
 # on some of them directly.
 # This ensures no duplicate instances of Cairo crates are pulled in by mistake.
 [patch.crates-io]
-cairo-lang-defs = { git = "https://github.com/starkware-libs/cairo/", rev = "bf4bb15a41094a08b06c7b1c502ffaa47d49aa8a" }
-cairo-lang-diagnostics = { git = "https://github.com/starkware-libs/cairo/", rev = "bf4bb15a41094a08b06c7b1c502ffaa47d49aa8a" }
-cairo-lang-filesystem = { git = "https://github.com/starkware-libs/cairo/", rev = "bf4bb15a41094a08b06c7b1c502ffaa47d49aa8a" }
-cairo-lang-parser = { git = "https://github.com/starkware-libs/cairo/", rev = "bf4bb15a41094a08b06c7b1c502ffaa47d49aa8a" }
-cairo-lang-semantic = { git = "https://github.com/starkware-libs/cairo/", rev = "bf4bb15a41094a08b06c7b1c502ffaa47d49aa8a" }
-cairo-lang-syntax = { git = "https://github.com/starkware-libs/cairo/", rev = "bf4bb15a41094a08b06c7b1c502ffaa47d49aa8a" }
-cairo-lang-utils = { git = "https://github.com/starkware-libs/cairo/", rev = "bf4bb15a41094a08b06c7b1c502ffaa47d49aa8a" }
+cairo-lang-defs = { git = "https://github.com/starkware-libs/cairo/", rev = "b585bc3ab77e7b6ac7741558fb12684609036f37" }
+cairo-lang-diagnostics = { git = "https://github.com/starkware-libs/cairo/", rev = "b585bc3ab77e7b6ac7741558fb12684609036f37" }
+cairo-lang-filesystem = { git = "https://github.com/starkware-libs/cairo/", rev = "b585bc3ab77e7b6ac7741558fb12684609036f37" }
+cairo-lang-parser = { git = "https://github.com/starkware-libs/cairo/", rev = "b585bc3ab77e7b6ac7741558fb12684609036f37" }
+cairo-lang-semantic = { git = "https://github.com/starkware-libs/cairo/", rev = "b585bc3ab77e7b6ac7741558fb12684609036f37" }
+cairo-lang-syntax = { git = "https://github.com/starkware-libs/cairo/", rev = "b585bc3ab77e7b6ac7741558fb12684609036f37" }
+cairo-lang-utils = { git = "https://github.com/starkware-libs/cairo/", rev = "b585bc3ab77e7b6ac7741558fb12684609036f37" }
