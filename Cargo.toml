@@ -1,19 +1,19 @@
 [package]
 name = "cairo-language-common"
 description = "Common Cairo compiler utils."
-version = "2.15.0"
+version = "2.20.0-rc.1"
 edition = "2024"
 repository = "https://github.com/software-mansion/cairo-language-common"
 license = "Apache-2.0"
 
 [dependencies]
-cairo-lang-defs = "*"
-cairo-lang-diagnostics = "*"
-cairo-lang-filesystem = "*"
-cairo-lang-parser = "*"
-cairo-lang-semantic = "*"
-cairo-lang-syntax = "*"
-cairo-lang-utils = "*"
+cairo-lang-defs = "2.20.0-rc.1"
+cairo-lang-diagnostics = "2.20.0-rc.1"
+cairo-lang-filesystem = "2.20.0-rc.1"
+cairo-lang-parser = "2.20.0-rc.1"
+cairo-lang-semantic = "2.20.0-rc.1"
+cairo-lang-syntax = "2.20.0-rc.1"
+cairo-lang-utils = "2.20.0-rc.1"
 salsa = "0.27.2"
 semver = "1"
 tracing = "0.1"
@@ -23,11 +23,3 @@ tracing = "0.1"
 # We list all Cairo crates that go into Scarb's compilation unit even if Scarb itself does not depend
 # on some of them directly.
 # This ensures no duplicate instances of Cairo crates are pulled in by mistake.
-[patch.crates-io]
-cairo-lang-defs = { git = "https://github.com/starkware-libs/cairo/", rev = "b585bc3ab77e7b6ac7741558fb12684609036f37" }
-cairo-lang-diagnostics = { git = "https://github.com/starkware-libs/cairo/", rev = "b585bc3ab77e7b6ac7741558fb12684609036f37" }
-cairo-lang-filesystem = { git = "https://github.com/starkware-libs/cairo/", rev = "b585bc3ab77e7b6ac7741558fb12684609036f37" }
-cairo-lang-parser = { git = "https://github.com/starkware-libs/cairo/", rev = "b585bc3ab77e7b6ac7741558fb12684609036f37" }
-cairo-lang-semantic = { git = "https://github.com/starkware-libs/cairo/", rev = "b585bc3ab77e7b6ac7741558fb12684609036f37" }
-cairo-lang-syntax = { git = "https://github.com/starkware-libs/cairo/", rev = "b585bc3ab77e7b6ac7741558fb12684609036f37" }
-cairo-lang-utils = { git = "https://github.com/starkware-libs/cairo/", rev = "b585bc3ab77e7b6ac7741558fb12684609036f37" }
