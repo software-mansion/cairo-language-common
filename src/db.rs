@@ -23,7 +23,7 @@ pub trait CommonGroup: Database {
         file: FileId<'db>,
         offset: TextOffset,
     ) -> Option<SyntaxNode<'db>> {
-        find_syntax_node_at_offset(self.as_dyn_database(), file, offset)
+        *find_syntax_node_at_offset(self.as_dyn_database(), file, offset)
     }
 
     /// Collects `file` and all its descendants together with modules from all these files. Does *not* includes inline macro expansions.
