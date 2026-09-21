@@ -279,6 +279,14 @@ fn find_generated_nodes<'db>(
             continue;
         };
 
+        // Span of the macro call that produced this file. Scarb's `generate_code_mappings`
+        // adds exactly one `CodeOrigin::CallSite` mapping per generated file, covering its
+        // whole content, with the call-site span as origin.
+        let call_site_span = mappings.iter().find_map(|mapping| match mapping.origin {
+            CodeOrigin::CallSite(span) => Some(span),
+            _ => None,
+        });
+
         let mappings: Vec<_> = mappings
             .iter()
             .filter(|mapping| match mapping.origin {
@@ -294,7 +302,12 @@ fn find_generated_nodes<'db>(
                         || (start < node_span.start
                             && node_span.end <= start.add_width(mapping.span.width()))
                 }
-                CodeOrigin::Span(span) => node.span(db).contains(span),
+                // Tokens created by the macro itself (e.g. every literal token in `quote!`) are
+                // mapped to the call site, but they are not copies of the call site node.
+                // Treating them as its resultants would lead to errors.
+                CodeOrigin::Span(span) => {
+                    Some(span) != call_site_span && node.span(db).contains(span)
+                }
             })
             .cloned()
             .collect();
