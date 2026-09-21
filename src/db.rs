@@ -279,8 +279,9 @@ fn find_generated_nodes<'db>(
             continue;
         };
 
-        //  Span of the macro call that produced this file, taken from the
-        // whole-file `CallSite` mapping added by Scarb.
+        // Span of the macro call that produced this file. Scarb's `generate_code_mappings`
+        // adds exactly one `CodeOrigin::CallSite` mapping per generated file, covering its
+        // whole content, with the call-site span as origin.
         let call_site_span = mappings.iter().find_map(|mapping| match mapping.origin {
             CodeOrigin::CallSite(span) => Some(span),
             _ => None,
@@ -303,8 +304,7 @@ fn find_generated_nodes<'db>(
                 }
                 // Tokens created by the macro itself (e.g. every literal token in `quote!`) are
                 // mapped to the call site, but they are not copies of the call site node.
-                // Treating them as its resultants would e.g. make hover on a derive name show
-                // definitions of everything the derive generated.
+                // Treating them as its resultants would lead to errors.
                 CodeOrigin::Span(span) => {
                     Some(span) != call_site_span && node.span(db).contains(span)
                 }
