@@ -7,7 +7,7 @@ use cairo_lang_defs::ids::ModuleId;
 use cairo_lang_diagnostics::ToOption;
 use cairo_lang_filesystem::db::{ext_as_virtual, get_parent_and_mapping, translate_location};
 use cairo_lang_filesystem::ids::{CodeOrigin, FileId, FileLongId};
-use cairo_lang_filesystem::span::TextOffset;
+use cairo_lang_filesystem::span::{TextOffset, TextSpan};
 use cairo_lang_parser::db::ParserGroup;
 use cairo_lang_semantic::items::macro_call::module_macro_modules;
 use cairo_lang_semantic::lsp_helpers::LspHelpers;
@@ -279,13 +279,14 @@ fn find_generated_nodes<'db>(
             continue;
         };
 
-        // Span of the macro call that produced this file. Scarb's `generate_code_mappings`
-        // adds exactly one `CodeOrigin::CallSite` mapping per generated file, covering its
-        // whole content, with the call-site span as origin.
-        let call_site_span = mappings.iter().find_map(|mapping| match mapping.origin {
-            CodeOrigin::CallSite(span) => Some(span),
-            _ => None,
-        });
+        // Spans vector of the macro calls that produced this file.
+        let call_site_span: Vec<TextSpan> = mappings
+            .iter()
+            .filter_map(|mapping| match mapping.origin {
+                CodeOrigin::CallSite(span) => Some(span),
+                _ => None,
+            })
+            .collect();
 
         let mappings: Vec<_> = mappings
             .iter()
@@ -306,7 +307,7 @@ fn find_generated_nodes<'db>(
                 // mapped to the call site, but they are not copies of the call site node.
                 // Treating them as its resultants would lead to errors.
                 CodeOrigin::Span(span) => {
-                    Some(span) != call_site_span && node.span(db).contains(span)
+                    !call_site_span.contains(&span) && node.span(db).contains(span)
                 }
             })
             .cloned()
